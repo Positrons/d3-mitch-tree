@@ -4,7 +4,8 @@
  * JS files minimal in size.
  */
 
-import { select, selectAll, event } from 'd3-selection'
+import { select, selectAll, event } from 'd3-selection';
+import { transition } from 'd3-transition'
 import * as hierarchy from 'd3-hierarchy'
 import * as zoom from 'd3-zoom'
 import { linkHorizontal, linkVertical } from 'd3-shape'
@@ -16,6 +17,7 @@ var d3 = {
   // For more information on live bindings, refer to:
   //   https://stackoverflow.com/questions/40012016/importing-d3-event-into-a-custom-build-using-rollup
   get event() { return event; },
+  get transition() { return transition; },
   linkHorizontal,
   linkVertical,
   ...hierarchy,

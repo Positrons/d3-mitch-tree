@@ -16,8 +16,7 @@ function recursiveFind(hierarchicalObject, getChildren, findCondition) {
         return hierarchicalObject;
     var children = getChildren(hierarchicalObject);
     var foundNode = children.find(findCondition);
-    if (!foundNode)
-    {
+    if (!foundNode) {
         for (var child of children) {
             foundNode = recursiveFind(child, getChildren, findCondition);
             if (foundNode)
@@ -36,8 +35,7 @@ function recursiveFind(hierarchicalObject, getChildren, findCondition) {
 function recursiveGet(hierarchicalObject, getChildren) {
     var allItems = [];
     var children = getChildren(hierarchicalObject);
-    if (children)
-    {
+    if (children) {
         for (var child of children) {
             allItems.push(child);
             var descendants = recursiveGet(child, getChildren);
@@ -88,15 +86,15 @@ class BaseTree extends EventEmitter {
         this._root = null;
         this._svg = null;
         this._panningContainer = null,
-        this._view = null;
+            this._view = null;
         this._treeGenerator = null;
         this._linkPathGenerator = null;
         this._visibleNodes = null;
         this._links = null;
         this._zoomListener = null,
 
-        // Assign/Set prototype properties, using values passed from the options object
-        this.setTheme(mergedOptions.theme);
+            // Assign/Set prototype properties, using values passed from the options object
+            this.setTheme(mergedOptions.theme);
         this.setOrientation(mergedOptions.orientation);
         this.setData(mergedOptions.data);
         this.setElement(mergedOptions.element);
@@ -235,31 +233,28 @@ class BaseTree extends EventEmitter {
      */
     focusToNode(idOrNodeDataItem) {
         this.removeSelection(this.getRoot());
-        
+
         var nodeDataItem = idOrNodeDataItem;
         if (typeof nodeDataItem !== 'object' && nodeDataItem !== null)
             nodeDataItem = this.getNode(nodeDataItem);
         var parentNode = null;
-        
+
         // Expand every parent/ancestor node
         parentNode = nodeDataItem.parent;
-        while(parentNode)
-        {
+        while (parentNode) {
             if (parentNode._children)
                 this.expand(parentNode);
             parentNode = parentNode.parent;
         }
 
-        if (this.getAllowFocus())
-        {
+        if (this.getAllowFocus()) {
             // Hide the parent/ancestor node siblings
             parentNode = nodeDataItem.parent;
-            while(parentNode)
-            {
+            while (parentNode) {
                 this.hideSiblings(parentNode);
                 parentNode = parentNode.parent;
             }
-            
+
             this.updateTreeWithFocusOnNode(nodeDataItem);
             nodeDataItem.selected = true;
         }
@@ -279,7 +274,7 @@ class BaseTree extends EventEmitter {
     getIsFlatData() {
         return this._isFlatData;
     }
-    
+
     /**
      * Sets the is flat data flag.
      * If set to true, you must specify
@@ -670,7 +665,7 @@ class BaseTree extends EventEmitter {
     getNode(idOrDataItem) {
         var id = idOrDataItem;
         if (typeof id === 'object' && id !== null)
-            id = this.getId(id);        
+            id = this.getId(id);
         var rootNode = this.getRoot();
 
         var getNodeChildren = (node) => {
@@ -937,8 +932,7 @@ class BaseTree extends EventEmitter {
 
         // If we need to center the tree by adjusting the view and the node position
         var x0, y0;
-        if (this.getOrientation() === 'topToBottom')
-        {
+        if (this.getOrientation() === 'topToBottom') {
             if (needToCenterView === false) {
                 x0 = this.getWidth() / 2;
             }
@@ -947,8 +941,7 @@ class BaseTree extends EventEmitter {
             }
             y0 = this.getHeight() / 4;
         }
-        else
-        {
+        else {
             if (needToCenterView === false) {
                 x0 = this.getHeight() / 2;
             }
@@ -965,7 +958,7 @@ class BaseTree extends EventEmitter {
             this.getZoomListener()
                 .extent([[0, 0], [this.getWidthWithoutMargins(), this.getHeightWithoutMargins()]]);
         }
-        
+
         return this;
     }
 
@@ -1005,11 +998,11 @@ class BaseTree extends EventEmitter {
         // Create the svg, and set its dimensions
         this._svg = d3.select(this.getElement())
             .append("svg")
-                .classed('mitch-d3-tree', true)
-                .classed(this.getTheme(), true)
-                .attr("preserveAspectRatio", "xMidYMid meet")
-                .style("width", "100%")
-                .style("height", "100%");
+            .classed('mitch-d3-tree', true)
+            .classed(this.getTheme(), true)
+            .attr("preserveAspectRatio", "xMidYMid meet")
+            .style("width", "100%")
+            .style("height", "100%");
 
         // Create the view with margins
         this._view = this.getSvg().append("g")
@@ -1127,7 +1120,7 @@ class BaseTree extends EventEmitter {
         rec(nodeDataItem);
         return this;
     }
-    
+
     /**
      * Populates the node's children to a hidden property.
      * 
@@ -1173,15 +1166,13 @@ class BaseTree extends EventEmitter {
         var scale = transform.k;
 
         var x, y, translateX, translateY;
-        if (this.getOrientation().toLowerCase() === 'toptobottom')
-        {
+        if (this.getOrientation().toLowerCase() === 'toptobottom') {
             x = -nodeDataItem.x0;
             y = -nodeDataItem.y0;
             translateX = x * scale + this.getWidth() / 2;
             translateY = y * scale + this.getHeight() / 2;
         }
-        else
-        {
+        else {
             x = -nodeDataItem.y0;
             y = -nodeDataItem.x0;
             translateX = x * scale + this.getWidth() / 4;
@@ -1213,14 +1204,14 @@ class BaseTree extends EventEmitter {
             eventType = 'collapse';
         else
             eventType = 'expand';
-        
+
         var event = {
             type: eventType,
             continue: true,
             nodeDataItem: nodeDataItem,
             nodeDataItemIndex: index,
             nodeDataItems: arr,
-            preventDefault: function() {
+            preventDefault: function () {
                 event.continue = false;
             }
         }
@@ -1266,7 +1257,7 @@ class BaseTree extends EventEmitter {
         parentNodeDataItem._children.push(newNode);
         return newNode;
     }
-    
+
     /**
      * Process the loaded data from AJAX
      * resulting from a node expand.
@@ -1289,7 +1280,7 @@ class BaseTree extends EventEmitter {
 
         this.update(nodeDataItem);
 
-        if (this.getAllowNodeCentering() === true && 
+        if (this.getAllowNodeCentering() === true &&
             (wasSelected === false || typeof wasSelected === 'undefined'))
             this.centerNode(nodeDataItem);
         return this;
@@ -1317,7 +1308,7 @@ class BaseTree extends EventEmitter {
 
             this.update(nodeDataItem);
 
-            if (this.getAllowNodeCentering() === true && 
+            if (this.getAllowNodeCentering() === true &&
                 (wasSelected === false || typeof wasSelected === 'undefined'))
                 this.centerNode(nodeDataItem);
         }
@@ -1439,7 +1430,7 @@ class BaseTree extends EventEmitter {
      */
     _updateNodes(nodeDataItem, nodes) {
         // Normalize for fixed-depth.
-        
+
         // You can increase the depth multiplication to get more depth,
         // i.e. increasing the distance between the parent node and child node
         nodes.forEach((data) => data.y = data.depth * this.getNodeDepthMultiplier());
@@ -1476,8 +1467,8 @@ class BaseTree extends EventEmitter {
                 if (!data.children && data._children)
                     return true;
                 else if (this.loadOnDemandSettings.isEnabled()
-                            && this.loadOnDemandSettings.hasChildren(data.data)
-                            && !data.children && !data._children) // If it does have children to load via AJAX
+                    && this.loadOnDemandSettings.hasChildren(data.data)
+                    && !data.children && !data._children) // If it does have children to load via AJAX
                     return true;
                 return false;
             })
@@ -1518,7 +1509,7 @@ class BaseTree extends EventEmitter {
         // UPDATE
         var linkUpdate = linkEnter.merge(link);
         var linkUpdateTransition = linkUpdate.transition()
-                                             .duration(this.getDuration());
+            .duration(this.getDuration());
 
         // Transition back to the parent element position
         this._linkUpdate(nodeDataItem, linkUpdate, linkUpdateTransition, link, linkPathGenerator);
@@ -1526,7 +1517,7 @@ class BaseTree extends EventEmitter {
         // Remove any exiting links
         var linkExit = link.exit();
         var linkExitTransition = linkExit.transition()
-                                          .duration(this.getDuration())
+            .duration(this.getDuration())
 
         this._linkExit(nodeDataItem, linkExit, linkExitTransition, link, linkPathGenerator);
 
