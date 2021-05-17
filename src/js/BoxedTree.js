@@ -66,7 +66,7 @@ class BoxedTree extends BaseTree {
             }
 
             // D3Plus Textbox with resizing capability
-            var d3PlusBodyTextBox = new d3plus_text__WEBPACK_IMPORTED_MODULE_1__["TextBox"]()
+            var d3PlusBodyTextBox = new d3PlusTextBox()
                 .select(element) // Sets the D3Plus code to append to the specified DOM element.
                 .data(singledOutData)
                 .text(function (data, index, arr) {
@@ -97,12 +97,12 @@ class BoxedTree extends BaseTree {
             .classed("level-group", true);
         levelGroups.each(function (data, index, arr) {
             var element = this;
-            var selection = _CustomD3__WEBPACK_IMPORTED_MODULE_0__["default"].select(element);
+            var selection = d3.select(element);
             var singledOutData = [];
             singledOutData.push(data);
 
             // D3Plus Textbox with resizing capability (level display text)
-            var d3PlusLevelTextBox = new d3plus_text__WEBPACK_IMPORTED_MODULE_1__["TextBox"]()
+            var d3PlusLevelTextBox = new d3PlusTextBox()
                 .select(element) // Sets the D3Plus code to append to the specified DOM element.
                 .data(singledOutData)
                 .text(function (data, index, arr) {

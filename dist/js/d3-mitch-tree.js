@@ -12600,7 +12600,7 @@ var BoxedTree_BoxedTree = /*#__PURE__*/function (_BaseTree) {
         } // D3Plus Textbox with resizing capability
 
 
-        var d3PlusBodyTextBox = new d3plus_text__WEBPACK_IMPORTED_MODULE_1__["TextBox"]().select(element) // Sets the D3Plus code to append to the specified DOM element.
+        var d3PlusBodyTextBox = new TextBox_TextBox().select(element) // Sets the D3Plus code to append to the specified DOM element.
         .data(singledOutData).text(function (data, index, arr) {
           return self.getBodyDisplayText.call(self, data);
         }).textAnchor("middle").verticalAlign("middle").fontSize(13) // in pixels
@@ -12615,13 +12615,11 @@ var BoxedTree_BoxedTree = /*#__PURE__*/function (_BaseTree) {
       var levelGroups = nodeEnter.append("g").classed("level-group", true);
       levelGroups.each(function (data, index, arr) {
         var element = this;
-
-        var selection = _CustomD3__WEBPACK_IMPORTED_MODULE_0__["default"].select(element);
-
+        var selection = CustomD3.select(element);
         var singledOutData = [];
         singledOutData.push(data); // D3Plus Textbox with resizing capability (level display text)
 
-        var d3PlusLevelTextBox = new d3plus_text__WEBPACK_IMPORTED_MODULE_1__["TextBox"]().select(element) // Sets the D3Plus code to append to the specified DOM element.
+        var d3PlusLevelTextBox = new TextBox_TextBox().select(element) // Sets the D3Plus code to append to the specified DOM element.
         .data(singledOutData).text(function (data, index, arr) {
           return self.getLevelDisplayText.call(self, data);
         }).textAnchor("middle").verticalAlign("middle").fontSize(13) // in pixels
