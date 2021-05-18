@@ -1,0 +1,16 @@
+{
+	"version": 3,
+	"file": "d3-mitch-tree.css",
+	"sources": [
+		"../../src/sass/d3-mitch-tree.scss",
+		"../../src/sass/components/core/boxed-tree.scss",
+		"../../src/sass/components/core/circle-tree.scss"
+	],
+	"sourcesContent": [
+		"@import \"./components/core/boxed-tree.scss\";\r\n@import \"./components/core/circle-tree.scss\";",
+		".mitch-d3-tree {\r\n\t&.boxed-tree {\r\n\t\t.node {\r\n\t\t\t.d3plus-textBox,\r\n\t\t\t.body-group .body-box, .title-group .title-box {\r\n\t\t\t\tcursor: pointer;\r\n\t\t\t}\r\n\t\r\n\t\t\t/*\r\n\t\t\t\tOffset the text so its right in the middle\r\n\t\t\t\tThis code is included due to d3plus not \r\n\t\t\t\tcentering vertically correctly for the textbox\r\n\t\t\t*/\r\n\t\t\t.title-group .d3plus-textBox text {\r\n\t\t\t\ttransform: translateY(0.15em);\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n}",
+		".mitch-d3-tree {\r\n\t&.circle-tree {\r\n\t\t.node {\r\n\t\t\tcircle {\r\n\t\t\t\tcursor: pointer;\r\n\t\t\t\tr: 0.4em;\r\n\t\t\t}\r\n\r\n\t\t\ttext {\r\n\t\t\t\ttransition: 0.3s linear;\r\n\t\t\t}\r\n\r\n\t\t\t&.childless text {\r\n\t\t\t\ttransform: translate(13px, 0.35em);\r\n\t\t\t\ttext-anchor: start;\r\n\t\t\t}\r\n\r\n\t\t\t&.collapsed text,\r\n\t\t\t&.expanded text {\r\n\t\t\t\ttransform: translate(-13px, 0.35em);\r\n\t\t\t\ttext-anchor: end;\r\n\t\t\t}\r\n\r\n\t\t\t&.middle.collapsed text,\r\n\t\t\t&.middle.expanded text {\r\n\t\t\t\ttransform: translate(-13px, -8px)\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n}"
+	],
+	"names": [],
+	"mappings": "ACAA,AAEE,cAFY,AACZ,WAAW,CACX,KAAK,CAAC;EAML;;;;KAIE;CAIF;;AAhBH,AAGG,cAHW,AACZ,WAAW,CACX,KAAK,CACJ,eAAe;AAHlB,cAAc,AACZ,WAAW,CACX,KAAK,CAEJ,WAAW,CAAC,SAAS,EAJxB,cAAc,AACZ,WAAW,CACX,KAAK,CAEmB,YAAY,CAAC,UAAU,CAAC;EAC9C,MAAM,EAAE,OAAO;CACf;;AANJ,AAaG,cAbW,AACZ,WAAW,CACX,KAAK,CAWJ,YAAY,CAAC,eAAe,CAAC,IAAI,CAAC;EACjC,SAAS,EAAE,kBAAkB;CAC7B;;ACfJ,AAGG,cAHW,AACZ,YAAY,CACZ,KAAK,CACJ,MAAM,CAAC;EACN,MAAM,EAAE,OAAO;EACf,CAAC,EAAE,KAAK;CACR;;AANJ,AAQG,cARW,AACZ,YAAY,CACZ,KAAK,CAMJ,IAAI,CAAC;EACJ,UAAU,EAAE,WAAW;CACvB;;AAVJ,AAYG,cAZW,AACZ,YAAY,CACZ,KAAK,AAUH,UAAU,CAAC,IAAI,CAAC;EAChB,SAAS,EAAE,uBAAuB;EAClC,WAAW,EAAE,KAAK;CAClB;;AAfJ,AAiBG,cAjBW,AACZ,YAAY,CACZ,KAAK,AAeH,UAAU,CAAC,IAAI;AAjBnB,cAAc,AACZ,YAAY,CACZ,KAAK,AAgBH,SAAS,CAAC,IAAI,CAAC;EACf,SAAS,EAAE,wBAAwB;EACnC,WAAW,EAAE,GAAG;CAChB;;AArBJ,AAuBG,cAvBW,AACZ,YAAY,CACZ,KAAK,AAqBH,OAAO,AAAA,UAAU,CAAC,IAAI;AAvB1B,cAAc,AACZ,YAAY,CACZ,KAAK,AAsBH,OAAO,AAAA,SAAS,CAAC,IAAI,CAAC;EACtB,SAAS,EAAE,sBAAsB;CACjC"
+}

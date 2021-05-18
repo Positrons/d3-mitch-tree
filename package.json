@@ -1,6 +1,6 @@
 {
   "name": "d3-mitch-tree",
-  "version": "0.0.0-development",
+  "version": "1.3.0-dev",
   "description": "D3 plugin to create interactive navigatable hierarchical tree diagrams.",
   "main": "./lib/d3-mitch-tree.js",
   "scripts": {
@@ -23,12 +23,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deltoss/d3-mitch-tree.git"
+    "url": "git+https://github.com/positrons/d3-mitch-tree.git"
   },
-  "author": "Michael Tran <MTran0011@outlook.com>",
+  "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/deltoss/d3-mitch-tree/issues"
+    "url": "https://github.com/positrons/d3-mitch-tree/issues"
   },
   "homepage": "https://d3-mitch-tree.netlify.com",
   "devDependencies": {

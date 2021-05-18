@@ -1,13 +1,14 @@
 import d3 from './CustomD3';
-import {TextBox as d3PlusTextBox} from 'd3plus-text';
+import { TextBox as d3PlusTextBox } from 'd3plus-text';
 import BaseTree from './BaseTree';
 import BoxedNodeSettings from './BoxedNodeSettings';
 
-class BoxedTree extends BaseTree{
+class BoxedTree extends BaseTree {
     /** 
      * @param {object} options The options object.
      * @param {bodyDisplayTextAccessorCallBack} options.getBodyDisplayText Determines how to obtain the body text to display for a node corresponding to a data item.
      * @param {titleDisplayTextAccessorCallBack} options.getTitleDisplayText Determines how to obtain the title text to display for a node corresponding to a data item.
+     * @param {levelDisplayTextAccessorCallBack} options.getLevelDisplayText Determines how to obtain the level text to display for a node corresponding to a data item.
     */
     constructor(options) {
         super(options);
@@ -19,6 +20,7 @@ class BoxedTree extends BaseTree{
 
         this._getBodyDisplayText = mergedOptions.getBodyDisplayText;
         this._getTitleDisplayText = mergedOptions.getTitleDisplayText;
+        this._getLevelDisplayText = mergedOptions.getLevelDisplayText;
         this.nodeSettings = new BoxedNodeSettings(this, mergedOptions.nodeSettings);
     }
 
@@ -52,15 +54,14 @@ class BoxedTree extends BaseTree{
             .attr("width", 0.000001)
             .attr("height", 0.000001);
 
-        bodyGroups.each(function(data, index, arr) {
+        bodyGroups.each(function (data, index, arr) {
             var element = this;
             var selection = d3.select(element);
             var singledOutData = [];
             singledOutData.push(data);
 
             var recalculatedPaddingTop = nodeBodyBoxPadding.top;
-            if (self.getTitleDisplayText.call(self, data))
-            {
+            if (self.getTitleDisplayText.call(self, data)) {
                 recalculatedPaddingTop += nodeTitleBoxHeight / 2;
             }
 
@@ -68,7 +69,7 @@ class BoxedTree extends BaseTree{
             var d3PlusBodyTextBox = new d3PlusTextBox()
                 .select(element) // Sets the D3Plus code to append to the specified DOM element.
                 .data(singledOutData)
-                .text((data, index, arr) => {
+                .text(function (data, index, arr) {
                     return self.getBodyDisplayText.call(self, data);
                 })
                 .textAnchor("middle")
@@ -77,14 +78,55 @@ class BoxedTree extends BaseTree{
                 .x(nodeBodyBoxPadding.left)
                 .y(recalculatedPaddingTop - nodeBodyBoxHeight / 2)
                 .width(nodeBodyBoxWidth - nodeBodyBoxPadding.left - nodeBodyBoxPadding.right)
-                .height(nodeBodyBoxHeight - recalculatedPaddingTop - nodeBodyBoxPadding.bottom)
-                .ellipsis((text, line) => {
+                .height((nodeBodyBoxHeight / 2) - recalculatedPaddingTop - nodeBodyBoxPadding.bottom)
+                .ellipsis(function (text, line) {
                     // If text was cut-off, add tooltip
                     selection.append("title")
                         .text(self.getBodyDisplayText(data));
-                    return ((text.replace(/\.|,$/g, "")) + "...");
+                    return text.replace(/\.|,$/g, "") + "...";
                 })
                 .render();
+
+            // console.log("body x: " + nodeBodyBoxPadding.left + " , body y: " + (recalculatedPaddingTop - nodeBodyBoxHeight / 2));
+            // console.log("body width: " + (nodeBodyBoxWidth - nodeBodyBoxPadding.left - nodeBodyBoxPadding.right) +
+            //   " , body height: " + ((nodeBodyBoxHeight / 2) - recalculatedPaddingTop - nodeBodyBoxPadding.bottom));
+        });
+
+
+        var levelGroups = nodeEnter.append("g")
+            .classed("level-group", true);
+        levelGroups.each(function (data, index, arr) {
+            var element = this;
+            var selection = d3.select(element);
+            var singledOutData = [];
+            singledOutData.push(data);
+
+            // D3Plus Textbox with resizing capability (level display text)
+            var d3PlusLevelTextBox = new d3PlusTextBox()
+                .select(element) // Sets the D3Plus code to append to the specified DOM element.
+                .data(singledOutData)
+                .text(function (data, index, arr) {
+                    return self.getLevelDisplayText.call(self, data);
+                })
+                .textAnchor("middle")
+                .verticalAlign("middle")
+                .fontSize(13) // in pixels
+                .x(nodeBodyBoxPadding.left)
+                .y(nodeBodyBoxPadding.top)
+                .width(nodeBodyBoxWidth - nodeBodyBoxPadding.left - nodeBodyBoxPadding.right)
+                .height((nodeBodyBoxHeight / 2) - nodeBodyBoxPadding.top - nodeBodyBoxPadding.bottom)
+                .ellipsis(function (text, line) {
+                    // If text was cut-off, add tooltip
+                    selection.append("title")
+                        .text(self.getLevelDisplayText(data));
+                    return text.replace(/\.|,$/g, "") + "...";
+                })
+                .render();
+
+            // console.log("level x: " + nodeBodyBoxPadding.left + " , level y: " + nodeBodyBoxPadding.top);
+            // console.log("level width: " + (nodeBodyBoxWidth - nodeBodyBoxPadding.left - nodeBodyBoxPadding.right) +
+            //   " , level height: " + ((nodeBodyBoxHeight / 2) - nodeBodyBoxPadding.top - nodeBodyBoxPadding.bottom));
+
         });
 
         /* Add Title Rectangle and Text for Node */
@@ -92,7 +134,7 @@ class BoxedTree extends BaseTree{
             .classed("title-group", true)
             .attr("transform", "translate(" + -nodeTitleBoxWidth / 3 + ", " + (-nodeTitleBoxHeight / 2 - nodeBodyBoxHeight / 2) + ")");
 
-        titleGroups.each(function(data, index, arr) {
+        titleGroups.each(function (data, index, arr) {
             if (!self.getTitleDisplayText.call(self, data))
                 return;
             var element = this;
@@ -134,12 +176,10 @@ class BoxedTree extends BaseTree{
         // Translating while inverting X/Y to
         // make tree direction from left to right,
         // instead of the typical top-to-down tree
-        if (this.getOrientation().toLowerCase() === 'toptobottom')
-        {
+        if (this.getOrientation().toLowerCase() === 'toptobottom') {
             nodeUpdateTransition.attr("transform", (data, index, arr) => "translate(" + data.x + "," + data.y + ")");
         }
-        else
-        {
+        else {
             nodeUpdateTransition.attr("transform", (data, index, arr) => "translate(" + data.y + "," + data.x + ")");
         }
 
@@ -148,6 +188,11 @@ class BoxedTree extends BaseTree{
 
         // Update the node attributes and style
         nodeUpdate.select(".node .body-group .body-box")
+            .attr("y", -(nodeBodyBoxHeight / 2))
+            .attr("width", nodeBodyBoxWidth)
+            .attr("height", nodeBodyBoxHeight);
+
+        nodeUpdate.select(".node .level-group .d3plus-textbox")
             .attr("y", -(nodeBodyBoxHeight / 2))
             .attr("width", nodeBodyBoxWidth)
             .attr("height", nodeBodyBoxHeight);
@@ -163,23 +208,21 @@ class BoxedTree extends BaseTree{
         var nodeBodyBoxHeight = this.nodeSettings.getBodyBoxHeight();
 
         nodeExitTransition.attr("transform", (data, index, arr) => {
-                var highestCollapsingParent = data.parent;
-                while (highestCollapsingParent.parent && !highestCollapsingParent.parent.children) {
-                    highestCollapsingParent = highestCollapsingParent.parent;
-                }
+            var highestCollapsingParent = data.parent;
+            while (highestCollapsingParent.parent && !highestCollapsingParent.parent.children) {
+                highestCollapsingParent = highestCollapsingParent.parent;
+            }
 
-                if (this.getOrientation().toLowerCase() === 'toptobottom')
-                {
-                    return "translate(" + (highestCollapsingParent.x + nodeBodyBoxWidth / 2) + "," + (highestCollapsingParent.y + nodeBodyBoxHeight) + ")";
-                }
-                else
-                {
-                    // Translating while inverting X/Y to
-                    // make tree direction from left to right,
-                    // instead of the typical top-to-down tree
-                    return "translate(" + (highestCollapsingParent.y + nodeBodyBoxWidth) + "," + (highestCollapsingParent.x + nodeBodyBoxHeight / 2) + ")";
-                }
-            })
+            if (this.getOrientation().toLowerCase() === 'toptobottom') {
+                return "translate(" + (highestCollapsingParent.x + nodeBodyBoxWidth / 2) + "," + (highestCollapsingParent.y + nodeBodyBoxHeight) + ")";
+            }
+            else {
+                // Translating while inverting X/Y to
+                // make tree direction from left to right,
+                // instead of the typical top-to-down tree
+                return "translate(" + (highestCollapsingParent.y + nodeBodyBoxWidth) + "," + (highestCollapsingParent.x + nodeBodyBoxHeight / 2) + ")";
+            }
+        })
             .remove();
 
         // On exit animate out
@@ -191,9 +234,17 @@ class BoxedTree extends BaseTree{
             .style("fill-opacity", 0.000001)
             .attr("transform", (data, index, arr) => "translate(0," + (-nodeBodyBoxHeight / 2) + ")")
             .selectAll("text")
-                .style("font-size", 0)
-                .attr("y", "0px")
-                .attr("x", "0px");
+            .style("font-size", 0)
+            .attr("y", "0px")
+            .attr("x", "0px");
+
+        nodeExitTransition.select(".node .level-group .d3plus-textBox")
+            .style("fill-opacity", 0.000001)
+            .attr("transform", (data, index, arr) => "translate(0," + (-nodeBodyBoxHeight / 2) + ")")
+            .selectAll("text")
+            .style("font-size", 0)
+            .attr("y", "0px")
+            .attr("x", "0px");
 
         nodeExitTransition.select(".node .title-group")
             .attr("transform", "translate(0, " + (-nodeBodyBoxHeight / 2) + ")");
@@ -206,9 +257,9 @@ class BoxedTree extends BaseTree{
             .style("fill-opacity", 0.000001)
             .attr("transform", "translate(0,0)")
             .selectAll("text")
-                .style("font-size", 0)
-                .attr("y", "0px")
-                .attr("x", "0px");
+            .style("font-size", 0)
+            .attr("y", "0px")
+            .attr("x", "0px");
 
         // On exit reduce the opacity of text labels
         nodeExitTransition.select(".d3plus-textBox")
@@ -218,15 +269,13 @@ class BoxedTree extends BaseTree{
 
     /** @inheritdoc */
     _getNodeSize() {
-        if (this.getOrientation().toLowerCase() === 'toptobottom')
-        {
+        if (this.getOrientation().toLowerCase() === 'toptobottom') {
             return [
                 this.nodeSettings.getBodyBoxWidth() + this.nodeSettings.getHorizontalSpacing(),
                 this.nodeSettings.getBodyBoxHeight() + this.nodeSettings.getVerticalSpacing()
             ];
         }
-        else
-        {
+        else {
             return [
                 this.nodeSettings.getBodyBoxHeight() + this.nodeSettings.getVerticalSpacing(),
                 this.nodeSettings.getBodyBoxWidth() + this.nodeSettings.getHorizontalSpacing()
@@ -235,7 +284,7 @@ class BoxedTree extends BaseTree{
     }
 
     /** @inheritdoc */
-    _linkEnter(source, linkEnter, links, linkPathGenerator)	{
+    _linkEnter(source, linkEnter, links, linkPathGenerator) {
         linkEnter.attr("d", (data, index, arr) => {
             var sourceCoordinate = {
                 x: source.x0,
@@ -274,18 +323,16 @@ class BoxedTree extends BaseTree{
             while (highestCollapsingParent.parent && !highestCollapsingParent.parent.children) {
                 highestCollapsingParent = highestCollapsingParent.parent;
             }
-            
+
             var sourceCoordinate = null;
-            if (this.getOrientation().toLowerCase() === 'toptobottom')
-            {
+            if (this.getOrientation().toLowerCase() === 'toptobottom') {
                 var nodeBodyBoxHeight = this.nodeSettings.getBodyBoxHeight();
                 sourceCoordinate = {
                     x: highestCollapsingParent.x,
                     y: highestCollapsingParent.y + nodeBodyBoxHeight
                 };
             }
-            else
-            {
+            else {
                 var nodeBodyBoxWidth = this.nodeSettings.getBodyBoxWidth();
                 sourceCoordinate = {
                     x: highestCollapsingParent.x,
@@ -320,14 +367,12 @@ class BoxedTree extends BaseTree{
         // in the format of [x, y], the default
         // format for the link generator to
         // generate the path
-        if (this.getOrientation().toLowerCase() === 'toptobottom')
-        {
+        if (this.getOrientation().toLowerCase() === 'toptobottom') {
             return d3.linkVertical()
                 .source((data) => [data.source.x + nodeBodyBoxWidth / 2, data.source.y - nodeBodyBoxHeight / 2])
                 .target((data) => [data.target.x + nodeBodyBoxWidth / 2, data.target.y + nodeBodyBoxHeight / 2]);
         }
-        else
-        {
+        else {
             return d3.linkHorizontal()
                 // Inverts the X/Y coordinates to draw links for a
                 // tree starting from left to right,
@@ -370,6 +415,32 @@ class BoxedTree extends BaseTree{
     }
 
     /**
+     * Sets the level display text accessor,
+     * used to get the level display text
+     * for the nodes.
+      * 
+      * @param {levelDisplayTextAccessorCallBack} newLevelDisplayTextAccessor 
+     */
+
+    setLevelDisplayTextAccessor(newLevelDisplayTextAccessor) {
+        this._getLevelDisplayText = newLevelDisplayTextAccessor;
+        return this;
+    }
+
+    /**
+     * Gets the level display text for a given data item.
+     *
+     * @param {object} nodeDataItem The data item to get the level display text from.
+     * @returns {string} The level display text to render for the node.
+     */
+
+    getLevelDisplayText(nodeDataItem) {
+        // Note that data in this context refers to D3 Tree data, not the original item data
+        // To Access the original item data, use the ".data" property
+        return this._getLevelDisplayText(nodeDataItem.data);
+    }
+
+    /**
      * Sets the title display text accessor,
      * used to get the title display text
      * for the nodes.
@@ -397,13 +468,11 @@ class BoxedTree extends BaseTree{
     centerNode(nodeDataItem) {
         var nodeBodyBoxWidth = this.nodeSettings.getBodyBoxWidth();
         var nodeBodyBoxHeight = this.nodeSettings.getBodyBoxHeight();
-        if (this.getOrientation().toLowerCase() === 'toptobottom')
-        {
+        if (this.getOrientation().toLowerCase() === 'toptobottom') {
             nodeDataItem.x0 = nodeDataItem.x0;
             nodeDataItem.y0 = nodeDataItem.y0 + nodeBodyBoxHeight / 2;
         }
-        else
-        {
+        else {
             nodeDataItem.y0 = nodeDataItem.y0 + nodeBodyBoxWidth / 2;
             nodeDataItem.x0 = nodeDataItem.x0;
         }
@@ -435,7 +504,8 @@ BoxedTree.defaults = {
     getBodyDisplayText: null,
     getTitleDisplayText: (dataItem) => {
         return null;
-    }
+    },
+    getLevelDisplayText: null
 }
 
 export default BoxedTree;
