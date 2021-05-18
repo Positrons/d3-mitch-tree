@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/positrons/d3-mitch-tree/compare/v1.3.0...v1.3.1) (2021-05-18)
+
+
+### Bug Fixes
+
+* rebuilt after re-importing d3plus-text ([ad03024](https://github.com/positrons/d3-mitch-tree/commit/ad0302497cb04e92b705ec36ef2c19b9110895c2))
+
 ## [1.2.1](https://github.com/positrons/d3-mitch-tree/compare/v1.2.0...v1.2.1) (2021-05-18)
 
 
