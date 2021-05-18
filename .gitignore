@@ -17,3 +17,5 @@ package-lock.json
 docs
 # dist
 lib
+# Local Netlify folder
+.netlify
