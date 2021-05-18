@@ -1027,7 +1027,7 @@ class BaseTree extends EventEmitter {
                 // a "transform" property (an object with three properties
                 // of x, y, and k), where x and y is for translation purposes,
                 // and k is the scaling factor
-                var transform = d3.event.transform;
+                var transform = d3.zoom.transform;
                 this.getPanningContainer().attr("transform", transform);
             });
         this.getSvg().call(this.getZoomListener());
