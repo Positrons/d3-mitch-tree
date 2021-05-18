@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/positrons/d3-mitch-tree/compare/v1.2.0...v1.2.1) (2021-05-18)
+
+
+### Bug Fixes
+
+* finally working ([e6e3599](https://github.com/positrons/d3-mitch-tree/commit/e6e3599d9cce74c6af8ffb2b5ddcb2db14c501ea))
+
 # [1.2.0](https://github.com/positrons/d3-mitch-tree/compare/v1.1.1...v1.2.0) (2021-05-18)
 
 
