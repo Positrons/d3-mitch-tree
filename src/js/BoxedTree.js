@@ -387,6 +387,8 @@ class BoxedTree extends BaseTree {
         super.validateSettings();
         if (!this._getBodyDisplayText)
             throw "Need to define the getBodyDisplayText function as part of the options";
+        if (!this._getLevelDisplayText)
+            throw "Need to define the getLevelDisplayText function as part of the options";
         return this;
     }
 

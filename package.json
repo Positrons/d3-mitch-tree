@@ -1,8 +1,8 @@
 {
-  "name": "d3-mitch-tree",
+  "name": "positrons-d3-mitch-tree",
   "version": "1.3.0-dev",
   "description": "D3 plugin to create interactive navigatable hierarchical tree diagrams.",
-  "main": "./lib/d3-mitch-tree.js",
+  "main": "./lib/positrons-d3-mitch-tree.js",
   "scripts": {
     "build-dev": "npm-run-all \"build-sass\" \"build-webpack-dev\" \"build-docs\"",
     "build-prd": "npm-run-all \"build-sass\" \"build-webpack-prd\" \"build-docs\"",
@@ -30,7 +30,7 @@
   "bugs": {
     "url": "https://github.com/positrons/d3-mitch-tree/issues"
   },
-  "homepage": "https://d3-mitch-tree.netlify.com",
+  "homepage": "https://positrons-d3-mitch-tree.netlify.com",
   "devDependencies": {
     "@babel/core": "^7.7.4",
     "@babel/preset-env": "^7.7.4",
