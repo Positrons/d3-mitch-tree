@@ -40,8 +40,7 @@ module.exports = (env, options) => {
 			globalObject: "this"
 		},
 		optimization: {
-			minimize: false,
-			concatenateModules: false
+			minimize: false
 		}
 	}
 
@@ -58,8 +57,7 @@ module.exports = (env, options) => {
 			globalObject: "this"
 		},
 		optimization: {
-			minimize: true,
-			concatenateModules: false
+			minimize: true
 		}
 	};
 
@@ -75,8 +73,7 @@ module.exports = (env, options) => {
 			umdNamedDefine: true
 		},
 		optimization: {
-			minimize: true,
-			concatenateModules: false
+			minimize: true
 		}
 	}
 
