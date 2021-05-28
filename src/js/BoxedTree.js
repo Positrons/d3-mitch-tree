@@ -84,8 +84,14 @@ class BoxedTree extends BaseTree {
                     selection.append("title")
                         .text(self.getBodyDisplayText(data));
                     return text.replace(/\.|,$/g, "") + "...";
-                })
-                .render();
+                });
+
+            if (self.getBodyDisplayText.call(self, data).toLowerCase().includes("credit capacity")) {
+                var box = d3.select(this)
+                box.select("rect")
+                    .classed("credit-cap", true)
+            }
+            d3PlusBodyTextBox.render();
 
             // console.log("body x: " + nodeBodyBoxPadding.left + " , body y: " + (recalculatedPaddingTop - nodeBodyBoxHeight / 2));
             // console.log("body width: " + (nodeBodyBoxWidth - nodeBodyBoxPadding.left - nodeBodyBoxPadding.right) +

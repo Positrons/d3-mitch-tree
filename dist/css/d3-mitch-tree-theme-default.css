@@ -30,6 +30,10 @@
   ry: 6;
 }
 
+.mitch-d3-tree.boxed-tree.default .node .body-group .body-box.credit-cap {
+  fill: #f1df4f;
+}
+
 .mitch-d3-tree.boxed-tree.default .node .title-group .title-box {
   stroke: steelblue;
   fill: #4682B4;
