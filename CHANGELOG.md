@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/positrons/d3-mitch-tree/compare/v1.3.1...v1.4.0) (2021-05-28)
+
+
+### Features
+
+* add conditional formatting to body-box ([30c4d3d](https://github.com/positrons/d3-mitch-tree/commit/30c4d3df0dbfbb50a880519abd73fc90818a62a6))
+
 ## [1.3.1](https://github.com/positrons/d3-mitch-tree/compare/v1.3.0...v1.3.1) (2021-05-18)
 
 
